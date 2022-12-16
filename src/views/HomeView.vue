@@ -1,14 +1,13 @@
 <template>
-<h1>Calculator</h1>
-<calc/>
+  <calc />
 </template>
 
 <script>
-import Calc from '@/components/Calc.vue';
+import Calc from "@/components/Calc.vue";
 export default {
-  name: 'HomeView',
+  name: "HomeView",
   components: {
-    Calc
-  }
-}
+    Calc,
+  },
+};
 </script>

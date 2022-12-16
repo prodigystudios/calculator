@@ -1,19 +1,19 @@
 <template>
   <div class="calc-container">
-    <div class="value-container">
+    <div class="value-container calc-wrapper">
       <h2>{{ value }}</h2>
     </div>
     <div class="calc-wrapper">
-      <button>C</button>
-      <button>+/-</button>
-      <button>%</button>
-      <button class="button-color-swap">÷</button>
+      <button @click="Clear()">C</button>
+      <button @click="SetValue('-')">+/-</button>
+      <button @click="SelectedOperator('%')">%</button>
+      <button class="button-color-swap" @click="SelectedOperator('/')">÷</button>
     </div>
     <div class="calc-wrapper">
       <input type="button" @click="SetValue(7)" value="7" />
       <input type="button" @click="SetValue(8)" value="8" />
       <input type="button" @click="SetValue(9)" value="9" />
-      <button class="button-color-swap">x</button>
+      <button class="button-color-swap" @click="SelectedOperator('*')">x</button>
     </div>
     <div class="calc-wrapper">
       <input type="button" @click="SetValue(4)" value="4" />
@@ -29,7 +29,7 @@
     </div>
     <div class="calc-wrapper">
       <button class="zero-button-size" @click="SetValue(0)" value="0">0</button>
-      <button>,</button>
+      <button @click="SetValue('.')">,</button>
       <button @click="Results()" class="button-color-swap">=</button>
     </div>
   </div>
@@ -59,33 +59,53 @@ export default {
       this.calcStarted = false;
 
       if (this.firstValue == "") {
-        this.firstValue = parseInt(this.value);
+        this.firstValue = parseFloat(this.value);
         return;
       }
-      if (this.secondValue == "") {
-        this.secondValue = parseInt(this.value);
-      }
-      console.log(this.firstValue, this.secondValue);
-      this.Results();
     },
     Results() {
+      this.secondValue = parseFloat(this.value);
       switch (this.operator) {
         case "+":
-          this.value = parseInt(this.firstValue) + parseInt(this.secondValue);
+          this.value = parseFloat(this.firstValue) + parseFloat(this.secondValue);
           this.secondValue = "";
           this.firstValue = this.value;
           break;
         case "-":
-          this.value = parseInt(this.firstValue) - parseInt(this.secondValue);
+          this.value = parseFloat(this.firstValue) - parseFloat(this.secondValue);
           this.secondValue = "";
           this.firstValue = this.value;
+          break;
+        case "*":
+          this.value = parseFloat(this.firstValue) * parseFloat(this.secondValue);
+          this.secondValue = "";
+          this.firstValue = this.value;
+          break;
+        case "/":
+          this.value = parseFloat(this.firstValue) / parseFloat(this.secondValue);
+          this.secondValue = "";
+          this.firstValue = this.value;
+          break;
+        case "%":
+          const decimalCalc = parseFloat(this.firstValue) / 100;
+          this.value = decimalCalc * this.secondValue;
+          this.secondValue = "";
+          this.firstValue = this.value;
+          break;
       }
+    },
+    Clear() {
+      this.value = "0";
+      this.firstValue = "";
+      this.secondValue = "";
+      this.calcStarted = false;
     },
   },
 };
 </script>
 <style scoped>
 .calc-container {
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -95,7 +115,6 @@ export default {
 }
 .calc-wrapper {
   display: flex;
-  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 5px;
 }
@@ -133,9 +152,24 @@ button:hover {
   font-size: 25px;
   background: orange;
 }
+.calc-wrapper h2 {
+  width: 100%;
+}
 .value-container {
   font-size: 20px;
   width: 55%;
   text-align: right;
+}
+@media screen and (min-width: 500px) {
+  .value-container {
+    width: 30%;
+    text-align: right;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .value-container {
+    width: 12%;
+    text-align: right;
+  }
 }
 </style>
