@@ -25,12 +25,14 @@
       <input type="button" @click="SetValue(1)" value="1" />
       <input type="button" @click="SetValue(2)" value="2" />
       <input type="button" @click="SetValue(3)" value="3" />
-      <button class="button-color-swap" @click="SelectedOperator('+')">+</button>
+      <button type="button" class="button-color-swap" @click="SelectedOperator('+')">
+        +
+      </button>
     </div>
     <div class="calc-wrapper">
       <button class="zero-button-size" @click="SetValue(0)" value="0">0</button>
       <button @click="SetValue('.')">,</button>
-      <button @click="Results()" class="button-color-swap">=</button>
+      <button @click="Results()" class="button-color-swap" value="=">=</button>
     </div>
   </div>
 </template>
@@ -105,7 +107,7 @@ export default {
 </script>
 <style scoped>
 .calc-container {
-  margin-top: 80px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -122,8 +124,8 @@ export default {
 button {
   font-size: 20px;
   font-weight: bold;
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 60px;
   background: grey;
   border: none;
@@ -132,11 +134,12 @@ button {
 input[type="button"] {
   font-size: 20px;
   font-weight: bold;
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 60px;
-  background: grey;
+  background: white;
   border: none;
+  color: black;
 }
 input[type="button"]:hover {
   background: lightblue;
@@ -144,9 +147,12 @@ input[type="button"]:hover {
 button:hover {
   background: lightblue;
 }
+button {
+  color: black;
+}
 
 .zero-button-size {
-  width: 130px;
+  width: 160px;
 }
 .button-color-swap {
   font-size: 25px;
@@ -156,7 +162,7 @@ button:hover {
   width: 100%;
 }
 .value-container {
-  font-size: 20px;
+  font-size: 25px;
   width: 55%;
   text-align: right;
 }
