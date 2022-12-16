@@ -5,7 +5,7 @@
     </div>
     <div class="calc-wrapper">
       <button>C</button>
-      <button @click="Add()">+/-</button>
+      <button>+/-</button>
       <button>%</button>
       <button class="button-color-swap">÷</button>
     </div>
@@ -19,18 +19,18 @@
       <input type="button" @click="SetValue(4)" value="4" />
       <input type="button" @click="SetValue(5)" value="5" />
       <input type="button" @click="SetValue(6)" value="6" />
-      <button class="button-color-swap">-</button>
+      <button class="button-color-swap" @click="SelectedOperator('-')">-</button>
     </div>
     <div class="calc-wrapper">
       <input type="button" @click="SetValue(1)" value="1" />
       <input type="button" @click="SetValue(2)" value="2" />
       <input type="button" @click="SetValue(3)" value="3" />
-      <button class="button-color-swap" @click="operator = '+'">+</button>
+      <button class="button-color-swap" @click="SelectedOperator('+')">+</button>
     </div>
     <div class="calc-wrapper">
       <button class="zero-button-size" @click="SetValue(0)" value="0">0</button>
       <button>,</button>
-      <button @click="results()" class="button-color-swap">=</button>
+      <button @click="Results()" class="button-color-swap">=</button>
     </div>
   </div>
 </template>
@@ -41,26 +41,44 @@ export default {
       value: "0",
       firstValue: "",
       secondValue: "",
-      operator: "",
+      lastCalculated: "",
+      operator: "+",
+      calcStarted: false,
     };
   },
   methods: {
     SetValue(enterdValue) {
-      if (this.operator != "") {
-        this.secondValue += enterdValue;
-        this.value = this.secondValue;
-      } else {
-        this.firstValue += enterdValue;
-        this.value = this.firstValue;
+      if (!this.calcStarted) {
+        this.value = "";
       }
+      this.calcStarted = true;
+      this.value += enterdValue;
     },
-  },
-  computed: {
-    results() {
+    SelectedOperator(selectedOperator) {
+      this.operator = selectedOperator;
+      this.calcStarted = false;
+
+      if (this.firstValue == "") {
+        this.firstValue = parseInt(this.value);
+        return;
+      }
+      if (this.secondValue == "") {
+        this.secondValue = parseInt(this.value);
+      }
+      console.log(this.firstValue, this.secondValue);
+      this.Results();
+    },
+    Results() {
       switch (this.operator) {
         case "+":
           this.value = parseInt(this.firstValue) + parseInt(this.secondValue);
+          this.secondValue = "";
+          this.firstValue = this.value;
           break;
+        case "-":
+          this.value = parseInt(this.firstValue) - parseInt(this.secondValue);
+          this.secondValue = "";
+          this.firstValue = this.value;
       }
     },
   },
@@ -79,6 +97,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  margin-bottom: 5px;
 }
 
 button {
@@ -100,9 +119,13 @@ input[type="button"] {
   background: grey;
   border: none;
 }
+input[type="button"]:hover {
+  background: lightblue;
+}
 button:hover {
   background: lightblue;
 }
+
 .zero-button-size {
   width: 130px;
 }
