@@ -30,8 +30,8 @@
       </button>
     </div>
     <div class="calc-wrapper">
-      <button class="zero-button-size" @click="SetValue(0)" value="0">0</button>
-      <button @click="SetValue('.')">,</button>
+      <input class="zero-button-size" type="button" @click="SetValue(0)" value="0" />
+      <input type="button" @click="SetValue('.')" value="," />
       <button @click="Results()" class="button-color-swap" value="=">=</button>
     </div>
   </div>
@@ -63,6 +63,9 @@ export default {
       if (this.firstValue == "") {
         this.firstValue = parseFloat(this.value);
         return;
+      }
+      if (this.firstValue != "") {
+        this.Results();
       }
     },
     Results() {
@@ -107,7 +110,7 @@ export default {
 </script>
 <style scoped>
 .calc-container {
-  margin-top: 30px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -136,23 +139,26 @@ input[type="button"] {
   font-weight: bold;
   width: 80px;
   height: 80px;
-  border-radius: 60px;
-  background: white;
+  border-radius: 200px;
+  background: rgb(31, 30, 30);
   border: none;
-  color: black;
+  color: rgb(255, 255, 255);
 }
 input[type="button"]:hover {
   background: lightblue;
 }
+button {
+  color: rgb(19, 3, 3);
+}
 button:hover {
   background: lightblue;
 }
-button {
-  color: black;
+button:focus {
+  background: rgb(255, 254, 254);
+  color: orange;
 }
-
 .zero-button-size {
-  width: 160px;
+  width: 160px !important;
 }
 .button-color-swap {
   font-size: 25px;
@@ -163,19 +169,7 @@ button {
 }
 .value-container {
   font-size: 25px;
-  width: 55%;
-  text-align: right;
-}
-@media screen and (min-width: 500px) {
-  .value-container {
-    width: 30%;
-    text-align: right;
-  }
-}
-@media screen and (min-width: 1000px) {
-  .value-container {
-    width: 12%;
-    text-align: right;
-  }
+  position: relative;
+  left: 135px;
 }
 </style>
